@@ -1,13 +1,21 @@
-from flask import Flask
+from flask import Flask, request 
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/hello", methods=["GET", "POST"])
+def hello():
+    if request.method == "GET":
+        return "You made a GET request"
+    elif request.method == "POST":
+        return "You made a POST request"
+    else: 
+        return "You will never see this message"
 
-def home():
-    return "hello im under the water"
+@app.route("/handle_url_params")
+def handle_params():
+    greeting  = request.args["greeting"]
+    name = request.args.get("name")
+    return f"{greeting} {name}"
 
 if __name__ == "__main__":
-    app.run(debug=True)
-
-    
+    app.run(host="127.0.0.1",port=5555, debug=True)
